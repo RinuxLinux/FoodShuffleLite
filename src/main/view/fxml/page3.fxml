@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="600.0" maxWidth="800.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #FFE6C9;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.s2rltx.projet.foodshuflle.application.controller.Page3_controller">
+		<top>
+		<BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+			<left>
+				<ImageView fitHeight="185.0" fitWidth="249.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+					<image>
+						<Image url="@../../../../../../image/LogoFoodShuffle.jpg" />
+					</image>
+					<BorderPane.margin>
+						<Insets left="10.0" />
+					</BorderPane.margin>
+				</ImageView>
+			</left>
+			<center>
+				<BorderPane prefHeight="188.0" prefWidth="541.0" BorderPane.alignment="CENTER">
+               <center>
+                  <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="90.0" prefWidth="541.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Text layoutX="33.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FOOD SHUFFLE" wrappingWidth="428.1600036621094">
+                           <font>
+                              <Font name="AR DELANEY" size="60.0" />
+                           </font>
+                        </Text>
+                        <Text layoutX="125.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Créer vos repas en quelques clics" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold Italic" size="16.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+               </center>
+				</BorderPane>
+			</center>
+		</BorderPane>
+	</top>
+
+   <center>
+
+      		<VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Votre liste de course :">
+               <font>
+                  <Font name="System Bold Italic" size="21.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="25.0" />
+               </VBox.margin>
+            </Text>
+            <TextArea fx:id="liste" prefHeight="265.0" prefWidth="687.0">
+               <VBox.margin>
+                  <Insets left="35.0" right="35.0" top="10.0" />
+               </VBox.margin></TextArea>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Imprimer votre liste" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="400.0" top="20.0" />
+               </VBox.margin>
+            </Text>
+            <ImageView fx:id="imprimer" fitHeight="70.0" fitWidth="50.0" onMouseClicked="#imprimerClicked()" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../image/icon_print.png" />
+               </image>
+               <VBox.margin>
+                  <Insets left="600.0" top="-35.0" />
+               </VBox.margin>
+            </ImageView>
+         </children>
+		</VBox>
+   </center>
+</BorderPane>
