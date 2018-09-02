@@ -28,6 +28,8 @@ public class Main extends Application {
      * 
      */
     public void setupDB(){
+        
+        
         // TODO:
         // check si db file exists
         // si oui : 

@@ -15,9 +15,11 @@ import java.util.List;
  * @author re
  */
 public class DBSetup {
+    
+    String PATH = System.getenv("LOCALAPPDATA"); 
 
     /**
-     * Create table
+     * Create table.
      */
     private static void createTables() {
 
@@ -64,7 +66,7 @@ public class DBSetup {
     }
 
     /**
-     * Connect to the database
+     * Connect to the database.
      *
      * @return the Connection object
      */
@@ -85,7 +87,7 @@ public class DBSetup {
     }
 
     /**
-     * Executing connect() and createTables()
+     * Executing connect() and createTables().
      */
     public void setup() {
 
@@ -93,6 +95,11 @@ public class DBSetup {
         createTables();
         System.out.println("Tables created.");
 
+    }
+    
+    private boolean isDir() {
+        String path;
+        
     }
 
 }
