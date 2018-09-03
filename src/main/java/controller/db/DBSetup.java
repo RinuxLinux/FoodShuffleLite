@@ -15,8 +15,6 @@ import java.util.List;
  * @author re
  */
 public class DBSetup {
-    
-    String PATH = System.getenv("LOCALAPPDATA"); 
 
     /**
      * Create table.
@@ -55,11 +53,11 @@ public class DBSetup {
                 Statement stmt = conn.createStatement()) {
             // create new table = execute sql
             //int count = 0;
-            for (int i=0; i<request.size(); i++) {
+            for (int i = 0; i < request.size(); i++) {
                 stmt.execute(request.get(i));
                 System.out.println("La requete " + i + " a été exécutée.");
             }
-            
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -95,11 +93,6 @@ public class DBSetup {
         createTables();
         System.out.println("Tables created.");
 
-    }
-    
-    private boolean isDir() {
-        String path;
-        
     }
 
 }

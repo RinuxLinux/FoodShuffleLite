@@ -36,14 +36,14 @@ public class SQLiteDBManager {
     }
 
     /**
-     * Connect to a database Usage: createNewDatabase("test.db");
+     * Connect to a database.
      *
      * @param filename the database file name
      */
-    public static void createNewDatabase(String filename) {
+    public static void createNewDatabase(String mypath) {
 
-        String mypath = "Z:/Dropbox/LABO-DBX/new-myebooks/";
-        String url = "jdbc:sqlite:" + mypath + filename;
+        //String mypath = "Z:/Dropbox/LABO-DBX/new-myebooks/";
+        String url = "jdbc:sqlite:" + mypath;
 
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
@@ -57,7 +57,8 @@ public class SQLiteDBManager {
     }
 
     /**
-     * Create a new table in given database TODO: factoriser noms db et table
+     * Create a new table in given database.
+     * TODO: factoriser noms db et table
      *
      * @usage obj.createNewTable("dbname.db")
      *
