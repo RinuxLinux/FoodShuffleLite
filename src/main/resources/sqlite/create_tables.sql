@@ -5,23 +5,23 @@
 PRAGMA foreign_keys = ON;
 
 -- TABLE nomDePlat *** renommer 'designation'
-create table if not exists designation (
-	id int primary key not null,
+CREATE TABLE IF NOT EXISTS designation (
+	id int PRIMARY KEY NOT NULL,
 	nomPlat varchar(250),
 	regime varchar(250)
 );
 
 -- TABLE ingredient
-create table if not exists ingredient (
-	id int primary key not null,
+CREATE TABLE IF NOT EXISTS ingredient (
+	id int PRIMARY KEY NOT NULL,
 	nomIngr varchar(100),
 	groupe varchar(100),
 	kcal int
 );
 
 -- TABLE recette  *** renommer 'composition'
-create table if not exists composition (
-	id int primary key not null,
+CREATE TABLE IF NOT EXISTS composition (
+	id int PRIMARY KEY NOT NULL,
 	P_id int REFERENCES designation(id),
 	portion int,
 	prepa int,
@@ -33,13 +33,13 @@ create table if not exists composition (
 
 -- TABLE glossaire
 CREATE TABLE IF NOT EXISTS glossaire (
-  id int primary key NOT NULL,
+  id int PRIMARY KEY NOT NULL,
   abreviation varchar(150),
   description varchar(150)
 );
 
 -- VIEW v_globale  *** renommer 'v_glob'
-create view if not exists v_glob as 
+CREATE view IF NOT EXISTS v_glob as 
 	select 
 		designation.nomPlat as Plats,
 		composition.portion as Pers,

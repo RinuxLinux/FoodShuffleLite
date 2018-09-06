@@ -14,82 +14,26 @@ public class Main {
     /**
      * Test pour first setup.
      */
-    /* public void test01() {
-        String path = System.getenv("LOCALAPPDATA");
-        String dirname = "FSP Reloaded";
-        String dbname = "test01.db";
+    public String locpath = System.getenv("LOCALAPPDATA");
+    public String dirname = "FSP Reloaded";
+    public String dbname = "test01.db";
 
-        Path dpath = Paths.get(path, dirname);
-        Path fpath = Paths.get(path, dirname, dbname);
+    private static void testCreateTables() {
 
-        int flag = 0;
+        // SQLite connection string
+        String url = "jdbc:sqlite:" + DBpath + dbname;
 
-        // isFile(1) isDir(2) isWrite(4)
-        if (fpath.toFile().exists()) {
-            flag += 1;
-        }
-        if (dpath.toFile().exists()) {
-            flag += 2;
-            if (dpath.toFile().canWrite()) {
-                flag += 4;
-            }
-        }
+        // SQLite Statement for table creation
+        List<String> request = new ArrayList<>();
 
-        System.out.println("| isFile | isDir | isWrite |");
-        System.out.println("+--------+-------+---------+");
+        // TABLE designation ex-Recette
+        request.add("CREATE TABLE IF NOT EXISTS designation (\n"
+                + "   id int PRIMARY KEY NOT NULL,\n"
+                + "   nomPlat varchar(250),\n"
+                + "   regime varchar(250)\n"
+                + ");\n");
 
-        switch (flag) {
 
-            case 1:
-                System.out.println("|   x    |   x   |    -    |");
-                System.out.println("+--------+-------+---------+");
-                break;
-            case 2:
-                System.out.println("|   -    |   x   |    -    |");
-                System.out.println("+--------+-------+---------+");
-                break;
-            case 3:
-                System.out.println("|   x    |   x   |    -    |");
-                System.out.println("+--------+-------+---------+");
-                break;
-            case 4:
-                System.out.println("|   ?    |   ?   |    ?    |");
-                System.out.println("+--------+-------+---------+");
-                break;
-            case 5:
-                System.out.println("|   ?    |   ?   |    ?    |");
-                System.out.println("+--------+-------+---------+");
-                break;
-            case 6:
-                System.out.println("|   -    |   x   |    x    |");
-                System.out.println("+--------+-------+---------+");
-                break;
-            case 7:
-                System.out.println("|   x    |   x   |    x    |");
-                System.out.println("+--------+-------+---------+");
-                break;
-        }
-
-        File directory = new File(directoryName);
-        if (!directory.exists()) {
-            directory.mkdir();
-            // If you require it to make the entire directory path including parents,
-            // use directory.mkdirs(); here instead.
-        }
-
-        File file = new File(directoryName + "/" + fileName);
-        try {
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(value);
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
-    }
-
-     */
     public static void main(String[] args) {
         String locpath = System.getenv("LOCALAPPDATA");
         String dirname = "FSP Reloaded";
@@ -122,14 +66,14 @@ public class Main {
         } else {
             System.out.println("Directories already exist.");
         }
-        
+
         try {
             //SQLiteDBManager session = new SQLiteDBManager();
             SQLiteDBManager.createNewDatabase(fpath.toString());
-                    
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        } 
+        }
 
     }
 
