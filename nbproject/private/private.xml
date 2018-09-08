@@ -3,13 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Z:/Dropbox/LABO-DBX/Netbeans-projects/FoodShuffleLite/src/main/java/controller/gui/Page1_controller.java</file>
             <file>file:/Z:/Dropbox/LABO-DBX/Netbeans-projects/FoodShuffleLite/src/main/java/controller/db/SQLiteDBManager.java</file>
-            <file>file:/Z:/Dropbox/LABO-DBX/Netbeans-projects/FoodShuffleLite/src/main/java/Main.java</file>
-            <file>file:/Z:/Dropbox/LABO-DBX/Netbeans-projects/FoodShuffleLite/src/main/java/controller/db/DBSetup.java</file>
-            <file>file:/Z:/Dropbox/LABO-DBX/Netbeans-projects/FoodShuffleLite/src/main/resources/sqlite/setup_db.sql</file>
+            <file>file:/Z:/Dropbox/LABO-DBX/Netbeans-projects/FoodShuffleLite/src/test/java/testDBsetup.java</file>
             <file>file:/Z:/Dropbox/LABO-DBX/Netbeans-projects/FoodShuffleLite/src/test/java/Main.java</file>
-            <file>file:/Z:/Dropbox/LABO-DBX/Netbeans-projects/FoodShuffleLite/src/main/java/controller/db/InsertApp.java</file>
         </group>
     </open-files>
 </project-private>
