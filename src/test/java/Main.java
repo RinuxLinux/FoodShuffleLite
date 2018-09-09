@@ -3,18 +3,18 @@
  */
 package test.java;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -23,10 +23,6 @@ public class Main {
     public static String PARENTDIR = System.getenv("USERPROFILE");
     public static File INSTALLPATH = Paths.get(PARENTDIR, APPDIR).toFile();
     public static File DBFULLPATH = Paths.get(PARENTDIR, APPDIR, DBNAME).toFile();
-
-    /**
-     *
-     */
     public static String URL = "jdbc:sqlite:" + DBFULLPATH;
 
     /**
@@ -37,55 +33,66 @@ public class Main {
      * @throws java.sql.SQLException
      */
     public static void main(String[] args) throws FileNotFoundException, IOException, SQLException {
-        
+
         new testDBsetup().checkExistence();
-        
-        String sql = gogetstring();
-        executeBigSQL(sql);
+
+        //String sql = gogetstring();
+        //executeBigSQL(sql);
+        fileToString("src/test/resources/sqlite/create_tables.sql");
+        fileToString("src/test/resources/sqlite/insert.sql");
+
     }
 
-    private static void executeBigSQL(String sql) throws SQLException {
-        Connection conn = DriverManager.getConnection(URL);
-        Statement stmt = conn.createStatement();
-        try {
-            // create new table = execute sql
-            stmt.execute(sql);
-            System.out.println("La requete a été exécutée.");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+    private static void fileToString(String mypath) throws IOException, SQLException {
+        //String mypath = "src/test/resources/sqlite/create_tables.sql";
+        //String mypath = "Z:\\Dropbox\\LABO-DBX\\Netbeans-projects\\FoodShuffleLite\\src\\test\\resources\\sqlite\\create_tables.sql";
+
+        String fileString = new String(Files.readAllBytes(Paths.get(mypath)), StandardCharsets.UTF_8);
+        String Str = fileString.replaceAll("\r\n", "\n");
+        List<String> request = new ArrayList<>();
+        StringBuilder rqt = new StringBuilder();
+
+        System.out.println("Return Value :");
+        for (String retval : Str.split(";\n")) {
+            System.out.println(retval);
+            request.add(retval + ";");
+            rqt.append(retval + ";");
         }
-        conn.close();
+
+        for (String el : request) {
+            System.out.println(el);
+        }
+
+        String workingDir = System.getProperty("user.dir");
+        System.out.println("Current working directory : " + workingDir);
+        // It's even easier in Java 8
+        //System.out.print("Contents (Java 8) : ");
+        //Files.lines(Paths.get(mypath), StandardCharsets.UTF_8).forEach(System.out::println);
     }
 
-    private static String gogetstring() {
-        //new testDBsetup().checkExistence();
-        try {
-            // InputStream is = new FileInputStream("..\\resources\\sqlite\\create_tables.sql");
-            String mypath = "Z:\\Dropbox\\LABO-DBX\\Netbeans-projects\\FoodShuffleLite\\src\\test\\resources\\sqlite\\create_tables.sql";
+    private static void readSQLScriptAndExecuteQueries() throws IOException, SQLException {
+        String mypath = "Z:\\Dropbox\\LABO-DBX\\Netbeans-projects\\FoodShuffleLite\\src\\test\\resources\\sqlite\\create_tables.sql";
+        String fileString = new String(Files.readAllBytes(Paths.get(mypath)), StandardCharsets.UTF_8);
+        //System.out.println("Contents (Java 7 with character encoding ) : " + fileString);
 
-            InputStream is = new FileInputStream(mypath);
-            BufferedReader buf = new BufferedReader(new InputStreamReader(is));
+        System.out.println("Return Value :");
 
-            String line = buf.readLine();
-            StringBuilder sb = new StringBuilder();
-
-            while (line != null) {
-                sb.append(line).append("\n");
-                line = buf.readLine();
+        try (Connection conn = DriverManager.getConnection(URL)) {
+            Statement stmt = conn.createStatement();
+            for (String retval : fileString.split(";\n")) {
+                System.out.println(retval);
+                // create new table = execute sql
+                //stmt.execute(retval);
+                System.out.println("La requete a été exécutée.");
             }
-
-            String fileAsString = sb.toString();
-            //System.out.println("Contents : " + fileAsString);
-
-            return fileAsString;
-
-            // execute sql
-            // SQLite Statement for table creation
-        } catch (FileNotFoundException f) {
-            System.out.println("File not found");
-        } catch (IOException i) {
-            System.out.println("IOException");
+            // It's even easier in Java 8
+            //System.out.print("Contents (Java 8) : ");
+            //Files.lines(Paths.get(mypath), StandardCharsets.UTF_8).forEach(System.out::println);
         }
-        return null;
     }
+
+    public Main() {
+        this.URL = "jdbc:sqlite:" + DBFULLPATH;
+    }
+
 }
