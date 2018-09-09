@@ -3,7 +3,11 @@
  */
 package test.java;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,6 +15,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,43 +24,63 @@ import java.util.List;
  */
 public class testDBsetup {
 
-    public String appDir = ".fsp_reloaded";
-    public String DBName = "test02.db";
-    public String parentDir = System.getenv("USERPROFILE");
-    public File installPath = Paths.get(parentDir, appDir).toFile();
-    public File DBFullpath = Paths.get(parentDir, appDir, DBName).toFile();
+    public static String APPDIR = ".fsp_reloaded";
+    public static String DBNAME = "test02.db";
+    public static String PARENTDIR = System.getenv("USERPROFILE");
+    public static File INSTALLPATH = Paths.get(PARENTDIR, APPDIR).toFile();
+    public static File DBFULLPATH = Paths.get(PARENTDIR, APPDIR, DBNAME).toFile();
+    public static String URL = "jdbc:sqlite:" + DBFULLPATH;
 
     /**
      * Check existence of install dir and db file.
+     *
+     * @throws java.sql.SQLException
+     * @since Java 7
      */
-    public void checkExistence() {
+    public void checkExistence() throws SQLException {
 
         // Install path exists ?
-        if (!installPath.exists()) {
-            System.out.println(installPath + " does not exist and will be created.");
-            installPath.mkdirs();
+        if (!INSTALLPATH.exists()) {
+            System.out.println(INSTALLPATH + " does not exist and will be created.");
+            // create dirs
+            // TODO: try catch PermissionError
+            INSTALLPATH.mkdirs();
+            try {
+                // set folder attr to hidden (dos only)  // Java 7+
+                Files.setAttribute(INSTALLPATH.toPath(), "dos:hidden", true);
+            } catch (IOException ex) {
+                Logger.getLogger(testDBsetup.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
-            System.out.println("Install dir has been found at " + installPath + ".");
+            System.out.println("Install dir has been found at " + INSTALLPATH + ".");
         }
 
-        // DB file exists ?
-        if (!DBFullpath.exists()) {
-            System.out.println(DBName + " does not exists and will be created.");
+        // Check existence and integrity of db
+        if (!DBFULLPATH.exists()) {
+            System.out.println("Database " + DBNAME + " does not exists and will be created.");
             // db is created when connected to. (?)
+            Connection conn = connect(URL);
+
+            // populate db
+            // 1. creer les tables via code source
+            // 2. exporter les schema dans un script sql
+            // 3. ???
+            disconnect(connect(URL));
+
         } else {
-            System.out.println("Database " + DBName + " has been found.");
+            System.out.println("Database " + DBNAME + " has been found.");
+            // TODO: test integrité
         }
+
+        // check db integrity
+        String URL = "jdbc:sqlite:" + DBFULLPATH;
+
     }
 
     /**
      * Create table.
      */
     private static void createTables() {
-
-        // SQLite connection string
-        String mypath = "Z:/Dropbox/LABO-DBX/new-myebooks/";
-        String dbname = "180811.db";
-        String url = "jdbc:sqlite:" + mypath + dbname;
 
         // SQLite Statement for table creation
         List<String> request = new ArrayList<>();
@@ -79,7 +105,7 @@ public class testDBsetup {
                 + ");");
 
         //System.out.println(sql);
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(URL);
                 Statement stmt = conn.createStatement()) {
             // create new table = execute sql
             //int count = 0;
@@ -98,16 +124,18 @@ public class testDBsetup {
      *
      * @return the Connection object
      */
-    private Connection connect() {
+    private Connection connect(String url) {
 
         // SQLite connection string
-        String dbpath = "Z:/Dropbox/LABO-DBX/new-myebooks/";
-        String dbname = "180811.db";
-        String url = "jdbc:sqlite:" + dbpath + dbname;
+        //String dbpath = "Z:/Dropbox/LABO-DBX/new-myebooks/";
+        //String dbname = "180811.db";
+        //String url = "jdbc:sqlite:" + dbpath + dbname;
         Connection conn = null;
 
         try {
             conn = DriverManager.getConnection(url);
+            System.out.println("Connection to database has been established.");
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -115,14 +143,36 @@ public class testDBsetup {
     }
 
     /**
-     * Executing connect() and createTables().
+     * Close given Connection object.
+     *
+     * @param conn the Connection objet connected to sqlite db.
      */
-    public void setup() {
+    private void disconnect(Connection conn) {
+        try {
+            conn.close();
+            System.out.println("Connection to database has been terminated.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
-        connect();
-        createTables();
-        System.out.println("Tables created.");
-
+    public boolean executeDBScripts(String aSQLScriptFilePath, Statement stmt) throws IOException, SQLException {
+        boolean isScriptExecuted = false;
+        try {
+            StringBuilder sb;
+            try (BufferedReader in = new BufferedReader(new FileReader(aSQLScriptFilePath))) {
+                String str;
+                sb = new StringBuilder();
+                while ((str = in.readLine()) != null) {
+                    StringBuilder append = sb.append(str).append("\n ");
+                }
+            }
+            stmt.executeUpdate(sb.toString());
+            isScriptExecuted = true;
+        } catch (IOException | SQLException e) {
+            System.err.println("Failed to Execute" + aSQLScriptFilePath + ". The error is" + e.getMessage());
+        }
+        return isScriptExecuted;
     }
 
 }
